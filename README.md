@@ -38,7 +38,7 @@ player disconnects, though my attempts at doing so seemed to do a lot more harm 
 
 Final remarks:
 
-The game was desgined to be a basic proof of concept. This was my first extensive integration of sockets in java and resulted
+The game was designed to be a basic proof of concept. This was my first extensive integration of sockets in java and resulted
 in a great number of difficulties. Building a networked game of pong proved to be much harder than I had anticipated, however I am proud
 of the result.
 
