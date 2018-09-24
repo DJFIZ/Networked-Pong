@@ -1,0 +1,3 @@
+package Pong;
+
+public enum GameState {PLAYING, BOTH_CONNECTED, BOTH_NOT_CONNECTED, P1_SCORED, P2_SCORED }
