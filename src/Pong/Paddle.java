@@ -1,5 +1,5 @@
 //Paddle.java
-//Paddle is an object
+//This is the paddle object which each player controls
 package Pong;
 
 import java.awt.*;

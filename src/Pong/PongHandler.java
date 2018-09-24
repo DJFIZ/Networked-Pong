@@ -1,5 +1,5 @@
 // PongHandler.java
-// Manages the users inputs and display
+// Manages the users inputs and the display
 package Pong;
 
 import javax.swing.*;
@@ -11,19 +11,18 @@ public class PongHandler extends Component implements Runnable, KeyListener {
 
     public static PongHandler pong;
 
+    //Dimensions of the game
     private final int WIDTH = 700;
     public final int HEIGHT = 500;
+
     private GameState gameState;
-
     private Renderer renderer;
-
     private JFrame jframe;
-
-    private boolean wKey, sKey, upArrow, downArrow, spaceBar;
-
     private Paddle paddle1;
     private Paddle paddle2;
     private ClientBall ball;
+
+    private boolean wKey, sKey, upArrow, downArrow, spaceBar; //respective boolean values for when a key is pressed/released
 
 
     //Constructor creates the display and objects to be displayed
@@ -41,6 +40,7 @@ public class PongHandler extends Component implements Runnable, KeyListener {
         paddle2 = new Paddle(this, 2);
     }
 
+    //allows the jframe to display
     void setVisible() {
         jframe.setVisible(true);
     }
@@ -56,6 +56,7 @@ public class PongHandler extends Component implements Runnable, KeyListener {
         paddle2.render(g);
     }
 
+    //getter methods for the games dimensions
     int getWIDTH(){
         return WIDTH;
     }
@@ -64,6 +65,7 @@ public class PongHandler extends Component implements Runnable, KeyListener {
         return HEIGHT;
     }
 
+    //setter method for updating the gameState as need be
     void setGameState(){gameState = PongClient.cC.sP.getGameState();}
 
     //updates opponents paddle to position 'n'
@@ -128,6 +130,7 @@ public class PongHandler extends Component implements Runnable, KeyListener {
 
     }
 
+    //listens for keys pressed
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -145,6 +148,7 @@ public class PongHandler extends Component implements Runnable, KeyListener {
         actionPerformed();
     }
 
+    //listens for keys released
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();

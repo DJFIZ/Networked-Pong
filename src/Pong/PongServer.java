@@ -1,5 +1,5 @@
 //PongServer.java
-//Manages
+//Manages all server-side functions
 package Pong;
 
 import java.io.DataInputStream;
@@ -10,11 +10,11 @@ import java.net.Socket;
 
 public class PongServer implements Runnable {
 
-    private int numPlayers;
+    private int numPlayers; //number of players
     private GameState gameState;
 
-    private int paddle1Y;
-    private int paddle2Y;
+    private int paddle1Y; //y location of the paddle of player 1
+    private int paddle2Y; //y location of the paddle of player 2
 
     // Named-constants for the dimensions
     private static final int HEIGHT = 500,
@@ -23,17 +23,16 @@ public class PongServer implements Runnable {
     private ServerBall serverBall;
     private ServerSocket serverSocket;
 
-
+    //Constructor creates a new ServerBall, initializes the gameState and numPlayers and opens a new serverSocket
     PongServer(String portNumber) {
-        //stores value for who scored last, initialized to 0 as neither player has scored
-        int lastPoint = 0;
+        int lastPoint = 0;  //stores value for who scored last, initialized to 0 as neither player has scored
         serverBall = new ServerBall(lastPoint, WIDTH, HEIGHT);
         gameState = GameState.BOTH_NOT_CONNECTED;
         int pN = Integer.parseInt(portNumber);
         numPlayers = 0;
         try {
-            serverSocket = new ServerSocket(pN);
-        } catch (IOException e) {
+            serverSocket = new ServerSocket(pN); //serverSocket opened at portNumber pN
+        } catch (IOException e) { //catches when portNumber could not be opened
             System.err.println("ERROR: Could not listen on port " + pN);
             System.exit(-1);
         }
@@ -46,10 +45,11 @@ public class PongServer implements Runnable {
         handleBall();
     }
 
+    //loops until 2 players have connected
     private void acceptConnections() {
         System.out.println("SERVER: Server initiated. Awaiting connections...");
         while (numPlayers < 2) {
-            Socket socket = null;
+            Socket socket = null; //initializes socket
             try {
                 socket = serverSocket.accept();
             } catch (IOException e) {
@@ -61,23 +61,23 @@ public class PongServer implements Runnable {
             if (numPlayers == 1) {
                 System.out.println("SERVER: Awaiting connection from Player #2.");
             }
-            Thread t = new Thread(sC);
+            Thread t = new Thread(sC); //starts a new thread for each client connected
             t.start();
         }
         System.out.println("SERVER: Both players have connected. Server will no longer accept new connections.");
-        gameState = GameState.BOTH_CONNECTED;
+        gameState = GameState.BOTH_CONNECTED; //changes gameState once both have connected
     }
 
 
+    //manages ball functions in the server so that both clients see the same ball
     private void handleBall() {
-        System.out.println("WERE HANDLING");
         Thread ballThread = new Thread(() -> {
         while (true) {
             if (gameState == GameState.BOTH_CONNECTED) {
                 serverBall.checkCollision(paddle1Y, paddle2Y);
                 serverBall.move();
                 try {
-                    Thread.sleep(5);
+                    Thread.sleep(5); //without a delay, the ball is updated too fast
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -87,22 +87,24 @@ public class PongServer implements Runnable {
         ballThread.start();
     }
 
-
+    //serverConnection handles each new client that is connected
     private class serverConnection implements Runnable {
 
         private Socket socket;
-        private DataInputStream dataIn;
+        private DataInputStream dataIn; //input
         private ObjectOutputStream objOut;
         ServerPacket sP;
-        private int playerID;
-        private int paddleHeight = 80;
+        private int playerID,
+                    paddleHeight = 80;
 
+        //Constructor receives which socket it uses and the player ID associated with that socket
         serverConnection(Socket s, int id) {
             socket = s;
             playerID = id;
-            paddle1Y = HEIGHT/2 - paddleHeight/2;
+            paddle1Y = HEIGHT/2 - paddleHeight/2; //Paddles initialized to the vertical center
             paddle2Y = HEIGHT/2 - paddleHeight/2;
             try {
+                //input and output streams for sending and receiving
                 dataIn = new DataInputStream(socket.getInputStream());
                 objOut = new ObjectOutputStream(socket.getOutputStream());
             } catch (IOException ex) {
@@ -112,7 +114,7 @@ public class PongServer implements Runnable {
             sendPacket();
         }
 
-
+        //reads data from the input stream and assigns the value to the correct paddle respective to the player ID
         @Override
         public void run() {
             try {
@@ -136,12 +138,14 @@ public class PongServer implements Runnable {
         }
 
 
+        //Sends a packet with the relevant game data
         private void sendPacket(){
             Thread sendThread = new Thread(() -> {
                 while(true) {
                     //System.out.println(serverBall.getY());
                     //System.out.println(serverBall.getX());
                     try {
+                        //changes what paddle location gets sent respective to player ID
                         if(playerID == 1)
                             sP = new ServerPacket(playerID, serverBall.getX(), serverBall.getY(), paddle2Y, gameState);
                         else

@@ -1,5 +1,5 @@
 //Join.java
-//
+//Creates and manages a frame for players to join a server
 package Pong;
 
 import javax.swing.*;
@@ -7,8 +7,9 @@ import javax.swing.*;
 public class Join {
 
     private JFrame joinFrame = new JFrame("Pong");
-    private String regex = "\\d+";
+    private String regex = "\\d+"; //used to check string (ln28)
 
+    //various elements of the swing GUI
     public JPanel joinPanel;
     public JButton enterButton;
     private JLabel portNumberLabel;
@@ -17,11 +18,12 @@ public class Join {
     private JTextField inputPortNumber;
 
 
+    //constructor creates the frame, prompts for a hostname and port number
     public Join() {
         enterButton.addActionListener(e -> {
             String[] args = new String[2];
-            String hN = inputHostName.getText();
-            String pN = inputPortNumber.getText();
+            String hN = inputHostName.getText(); //hostname
+            String pN = inputPortNumber.getText(); //portnumber
             //bulletproof loop to ensure only numbers are entered.
             while (!pN.matches(regex)) {
                 JOptionPane.showMessageDialog(null, "Please enter a valid port number");

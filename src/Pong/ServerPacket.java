@@ -8,11 +8,11 @@ class ServerPacket implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int playerID,
+    private int playerID,               //ID of the player (1 or 2)
                 ballX,                  //x coord of ball
                 ballY,                  //y coord of ball
                 opponentPaddle;         //position (y coord) of opponents paddle
-    private GameState gameState;              //state of the game
+    private GameState gameState;        //state of the game
 
     //Constructor assigns values to the necessary variable based on the input args
     ServerPacket(int pID, int x, int y, int oP, GameState gS){

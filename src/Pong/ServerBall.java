@@ -50,6 +50,7 @@ class ServerBall {
         if (y > gameHeight - ballHeight / 2) {
             yMovement = -yMovement;
         }
+        //resets the ball to the centre of the screen once it passes either paddle
         if (x <= ballWidth/2 || x >= gameWidth - (ballWidth/2))
             resetBall();
     }
@@ -60,18 +61,22 @@ class ServerBall {
         int paddleHeight = 80;
         int paddleWidth = 20;
 
+        //collision with paddle 1s vertical face
         if (x == 20 + paddleWidth) {
             if (y >= p1 && y <= p1 + paddleHeight) {
                 xMovement = -xMovement;
             }
+            //collision with paddle 2s vertical face
         } else if (x == gameWidth - 20 - paddleWidth) {
             if (y >= p2 && y <= p2 + paddleHeight) {
                 xMovement = -xMovement;
             }
+            //collision with paddle 1s horizontal faces
         } else if (y == p2 || y == p2 + paddleHeight) {
             if (x >= gameWidth - 20 - paddleWidth && x <= gameWidth - 20) {
                 yMovement = -yMovement;
             }
+            //collision with paddle 2s horizontal faces
         } else if (y == p1 || y == p1 + paddleHeight) {
             if (x >= 20 && x <= paddleWidth + 20) {
                 yMovement = -yMovement;
@@ -79,6 +84,8 @@ class ServerBall {
         }
     }
 
+
+    //resets the ball to the middle of the screen with a random direction, maintaining the same speed
     void resetBall(){
         x = gameWidth/2;
         y = gameHeight/2;
