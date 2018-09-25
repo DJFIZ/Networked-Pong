@@ -18,7 +18,7 @@ public class PongServer implements Runnable {
 
     // Named-constants for the dimensions
     private static final int HEIGHT = 500,
-                             WIDTH = 700;
+            WIDTH = 700;
 
     private ServerBall serverBall;
     private ServerSocket serverSocket;
@@ -72,17 +72,17 @@ public class PongServer implements Runnable {
     //manages ball functions in the server so that both clients see the same ball
     private void handleBall() {
         Thread ballThread = new Thread(() -> {
-        while (true) {
-            if (gameState == GameState.BOTH_CONNECTED) {
-                serverBall.checkCollision(paddle1Y, paddle2Y);
-                serverBall.move();
-                try {
-                    Thread.sleep(5); //without a delay, the ball is updated too fast
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            while (true) {
+                if (gameState == GameState.BOTH_CONNECTED) {
+                    serverBall.checkCollision(paddle1Y, paddle2Y);
+                    serverBall.move();
+                    try {
+                        Thread.sleep(5); //without a delay, the ball is updated too fast
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        }
         });
         ballThread.start();
     }
@@ -95,14 +95,14 @@ public class PongServer implements Runnable {
         private ObjectOutputStream objOut;
         ServerPacket sP;
         private int playerID,
-                    paddleHeight = 80;
+                paddleHeight = 80;
 
         //Constructor receives which socket it uses and the player ID associated with that socket
         serverConnection(Socket s, int id) {
             socket = s;
             playerID = id;
-            paddle1Y = HEIGHT/2 - paddleHeight/2; //Paddles initialized to the vertical center
-            paddle2Y = HEIGHT/2 - paddleHeight/2;
+            paddle1Y = HEIGHT / 2 - paddleHeight / 2; //Paddles initialized to the vertical center
+            paddle2Y = HEIGHT / 2 - paddleHeight / 2;
             try {
                 //input and output streams for sending and receiving
                 dataIn = new DataInputStream(socket.getInputStream());
@@ -139,14 +139,14 @@ public class PongServer implements Runnable {
 
 
         //Sends a packet with the relevant game data
-        private void sendPacket(){
+        private void sendPacket() {
             Thread sendThread = new Thread(() -> {
-                while(true) {
+                while (true) {
                     //System.out.println(serverBall.getY());
                     //System.out.println(serverBall.getX());
                     try {
                         //changes what paddle location gets sent respective to player ID
-                        if(playerID == 1)
+                        if (playerID == 1)
                             sP = new ServerPacket(playerID, serverBall.getX(), serverBall.getY(), paddle2Y, gameState);
                         else
                             sP = new ServerPacket(playerID, serverBall.getX(), serverBall.getY(), paddle1Y, gameState);

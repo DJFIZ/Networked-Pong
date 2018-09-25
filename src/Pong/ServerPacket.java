@@ -9,13 +9,13 @@ class ServerPacket implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int playerID,               //ID of the player (1 or 2)
-                ballX,                  //x coord of ball
-                ballY,                  //y coord of ball
-                opponentPaddle;         //position (y coord) of opponents paddle
+            ballX,                  //x coord of ball
+            ballY,                  //y coord of ball
+            opponentPaddle;         //position (y coord) of opponents paddle
     private GameState gameState;        //state of the game
 
     //Constructor assigns values to the necessary variable based on the input args
-    ServerPacket(int pID, int x, int y, int oP, GameState gS){
+    ServerPacket(int pID, int x, int y, int oP, GameState gS) {
         playerID = pID;
         ballX = x;
         ballY = y;
@@ -24,13 +24,23 @@ class ServerPacket implements Serializable {
     }
 
     //getter methods to allow clients to receive the data contained within each packet
-    int getPlayerID() { return playerID; }
+    int getPlayerID() {
+        return playerID;
+    }
 
-    int getBallX(){ return ballX; }
+    int getBallX() {
+        return ballX;
+    }
 
-    int getBallY(){ return ballY; }
+    int getBallY() {
+        return ballY;
+    }
 
-    int getOpponentPaddle(){ return opponentPaddle; }
+    int getOpponentPaddle() {
+        return opponentPaddle;
+    }
 
-    GameState getGameState(){ return gameState; }
+    GameState getGameState() {
+        return gameState;
+    }
 }

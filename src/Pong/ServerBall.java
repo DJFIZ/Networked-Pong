@@ -7,22 +7,22 @@ import java.util.Random;
 class ServerBall {
 
     private int x,                 //x coord for the ball
-                y,                 //y coord for the ball
-                xMovement,         //speed and direction of the ball on the x-axis
-                yMovement,         //speed and direction o the ball on the y-axis
-                gameWidth,         //
-                gameHeight,        //
-                speed = 1,         //
-                ballWidth = 20,    //
-                ballHeight = 20,   //
-                lastPoint;
+            y,                 //y coord for the ball
+            xMovement,         //speed and direction of the ball on the x-axis
+            yMovement,         //speed and direction o the ball on the y-axis
+            gameWidth,         //
+            gameHeight,        //
+            speed = 1,         //
+            ballWidth = 20,    //
+            ballHeight = 20,   //
+            lastPoint;
 
     private Random rand;
 
     //Constructor creates a new ball in the middle of the map and gives it a...
     // - random direction if this is the first ball of the game
     // - or a direction based on who scored last, with the ball being 'served' from the player who scored
-    ServerBall(int lP, int w, int h){
+    ServerBall(int lP, int w, int h) {
         rand = new Random();
         lastPoint = lP;
         gameWidth = w;
@@ -31,8 +31,8 @@ class ServerBall {
     }
 
     //generates a random direction for the ball at the beginning of the game
-    private int randomDirection(){
-        if((rand.nextInt(2)+1) == 1)
+    private int randomDirection() {
+        if ((rand.nextInt(2) + 1) == 1)
             return 1;
         else
             return -1;
@@ -51,7 +51,7 @@ class ServerBall {
             yMovement = -yMovement;
         }
         //resets the ball to the centre of the screen once it passes either paddle
-        if (x <= ballWidth/2 || x >= gameWidth - (ballWidth/2))
+        if (x <= ballWidth / 2 || x >= gameWidth - (ballWidth / 2))
             resetBall();
     }
 
@@ -86,11 +86,11 @@ class ServerBall {
 
 
     //resets the ball to the middle of the screen with a random direction, maintaining the same speed
-    void resetBall(){
-        x = gameWidth/2;
-        y = gameHeight/2;
+    void resetBall() {
+        x = gameWidth / 2;
+        y = gameHeight / 2;
         //if(lastPoint == 0){
-            xMovement = speed * randomDirection();
+        xMovement = speed * randomDirection();
         //}
         //else if(lastPoint == 1){
         //    xMovement = speed;
@@ -102,9 +102,13 @@ class ServerBall {
     }
 
     //getter methods to retrieve ball coords
-    int getX() {return x;}
+    int getX() {
+        return x;
+    }
 
-    int getY() {return y;}
+    int getY() {
+        return y;
+    }
 
 
 }

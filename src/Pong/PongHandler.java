@@ -26,16 +26,16 @@ public class PongHandler extends Component implements Runnable, KeyListener {
 
 
     //Constructor creates the display and objects to be displayed
-    PongHandler(){
+    PongHandler() {
         jframe = new JFrame("Pong");
         JPanel jpanel = new JPanel();
-        jpanel.setPreferredSize(new Dimension(WIDTH,HEIGHT));
+        jpanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         jframe.getContentPane().add(jpanel);
         jframe.pack();
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.add(renderer = new Renderer());
         jframe.addKeyListener(this);
-        ball = new ClientBall(WIDTH,HEIGHT);
+        ball = new ClientBall(WIDTH, HEIGHT);
         paddle1 = new Paddle(this, 1);
         paddle2 = new Paddle(this, 2);
     }
@@ -50,14 +50,14 @@ public class PongHandler extends Component implements Runnable, KeyListener {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         g.setColor(Color.WHITE);
-        g.drawLine(WIDTH / 2, 0, WIDTH/2, HEIGHT);
+        g.drawLine(WIDTH / 2, 0, WIDTH / 2, HEIGHT);
         ball.render(g);
         paddle1.render(g);
         paddle2.render(g);
     }
 
     //getter methods for the games dimensions
-    int getWIDTH(){
+    int getWIDTH() {
         return WIDTH;
     }
 
@@ -66,15 +66,16 @@ public class PongHandler extends Component implements Runnable, KeyListener {
     }
 
     //setter method for updating the gameState as need be
-    void setGameState(){gameState = PongClient.cC.sP.getGameState();}
+    void setGameState() {
+        gameState = PongClient.cC.sP.getGameState();
+    }
 
     //updates opponents paddle to position 'n'
     void updateOpponentPaddle(int n, ClientConnection cC) {
-        if(cC.sP.getPlayerID() == 1) {
+        if (cC.sP.getPlayerID() == 1) {
             paddle2.setY(n);
             renderer.repaint();
-        }
-        else {
+        } else {
             paddle1.setY(n);
             renderer.repaint();
         }
@@ -92,26 +93,24 @@ public class PongHandler extends Component implements Runnable, KeyListener {
     //'w' or upArrow will move the current users paddle up and send its location to the other client via server
     //'s' or downArrow will move the current users paddle down and send its location to the other client via server
     private void actionPerformed() {
-        if(spaceBar && gameState == GameState.BOTH_CONNECTED){
+        if (spaceBar && gameState == GameState.BOTH_CONNECTED) {
             PongClient.cC.sendMovement(1000);
         }
-        if(wKey || upArrow) {
-            if(PongClient.cC.sP.getPlayerID() == 1) {
+        if (wKey || upArrow) {
+            if (PongClient.cC.sP.getPlayerID() == 1) {
                 paddle1.moveUp();
                 PongClient.cC.sendMovement(paddle1.getY());
-            }
-            else {
+            } else {
                 paddle2.moveUp();
                 PongClient.cC.sendMovement(paddle2.getY());
             }
             renderer.repaint();
         }
-        if(sKey || downArrow) {
-            if(PongClient.cC.sP.getPlayerID() == 1) {
+        if (sKey || downArrow) {
+            if (PongClient.cC.sP.getPlayerID() == 1) {
                 paddle1.moveDown();
                 PongClient.cC.sendMovement(paddle1.getY());
-            }
-            else {
+            } else {
                 paddle2.moveDown();
                 PongClient.cC.sendMovement(paddle2.getY());
             }

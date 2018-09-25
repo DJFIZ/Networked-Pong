@@ -9,35 +9,34 @@ public class HostOrJoin {
     private boolean resolved;
 
     //Constructor
-    HostOrJoin(){     //Initializes new JFrame for use in prompting for user input
+    HostOrJoin() {     //Initializes new JFrame for use in prompting for user input
         resolved = false;                               //Initializes resolved to false, boolean implemented later
     }
 
     //Prompts whether a user would like to 'host' or 'join' a server
-    public void setUp(){
+    public void setUp() {
         Object[] options = {"Host", "Join"};
         int n = JOptionPane.showOptionDialog(null,
                 "Would you like to host or join a server?",
-                "Pong",JOptionPane.YES_NO_OPTION,
+                "Pong", JOptionPane.YES_NO_OPTION,
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 options,
                 options[0]);
-                if (n == JOptionPane.YES_OPTION)
-                    host();
-                else if (n == JOptionPane.NO_OPTION){
-                    Join newJoin = new Join();
-                    newJoin.join();
-                }
-                else
-                    System.exit(0);
+        if (n == JOptionPane.YES_OPTION)
+            host();
+        else if (n == JOptionPane.NO_OPTION) {
+            Join newJoin = new Join();
+            newJoin.join();
+        } else
+            System.exit(0);
     }
 
     //Upon 'host' being chosen, user is prompted to enter the preferred port number to host the server on
-    private void host(){
+    private void host() {
         String input = JOptionPane.showInputDialog(null,
                 "Enter preferred port number:",
-                "Pong",JOptionPane.PLAIN_MESSAGE);
+                "Pong", JOptionPane.PLAIN_MESSAGE);
         if (input == null)
             System.exit(0);
         String regex = "\\d+";
@@ -61,13 +60,13 @@ public class HostOrJoin {
         args[1] = input;
         //'resolved' boolean implemented below to allow the user to re-enter their option
         // upon deciding to cancel the action of closing the server
-        while(!resolved) {
+        while (!resolved) {
             int reply = JOptionPane.showConfirmDialog(null,
-                "Would you like to join this server?",
-                "Pong",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null);
+                    "Would you like to join this server?",
+                    "Pong",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null);
             if (reply == JOptionPane.YES_OPTION) {
                 Thread clientThread = new Thread(new PongClient(args)); //starts a new thread to handle client implementation
                 clientThread.start();
@@ -87,8 +86,7 @@ public class HostOrJoin {
                         null);
                 if (m == JOptionPane.NO_OPTION) {
                     resolved = false;
-                }
-                else {
+                } else {
                     System.exit(0);
                 }
             }
